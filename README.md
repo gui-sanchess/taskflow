@@ -1,5 +1,8 @@
 # TaskFlow — Gerenciador de Tarefas
 
+Guilherme Diego Sanches - 10436672
+Andre Tozi Magalhaes - 10436460
+
 O **TaskFlow** é uma aplicação didática desenvolvida em **React + TypeScript** para trabalhar, de forma progressiva, a construção de interfaces baseadas em componentes, navegação entre páginas, gerenciamento de estado e comunicação com uma API REST.
 
 O projeto utiliza como referência um protótipo visual previamente definido. A implementação não busca converter o HTML original linha a linha, mas transformar a interface em uma estrutura organizada de páginas, componentes, estado e serviços.
