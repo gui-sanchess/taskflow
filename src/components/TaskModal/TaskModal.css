@@ -1,0 +1,47 @@
+.task-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.52);
+}
+
+.task-modal__content {
+  position: relative;
+  width: min(100%, 640px);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+
+.task-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+}
+
+.task-modal__content .task-form {
+  padding-top: 28px;
+}
+
+@media (max-width: 560px) {
+  .task-modal {
+    align-items: end;
+    padding: 12px;
+  }
+
+  .task-modal__content {
+    width: 100%;
+    max-height: calc(100vh - 24px);
+  }
+}
