@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { criarTarefa, excluirTarefa, listarTarefas } from "../services/tarefaService";
+import { alterarTarefa, criarTarefa, excluirTarefa, listarTarefas } from "../services/tarefaService";
 import type { Tarefa } from "../types/Tarefa";
 
 type NovaTarefa = Omit<Tarefa, "_id">;
@@ -10,6 +10,8 @@ type TarefasContextType = {
   erro: string;
   adicionarTarefa: (novaTarefa: NovaTarefa) => Promise<void>;
   removerTarefa: (id: string) => Promise<void>;
+  atualizarTarefa: (tarefaAtualizada: Tarefa) => Promise<void>;
+  alternarConclusao: (tarefa: Tarefa) => Promise<void>;
 };
 
 const TarefasContext = createContext<TarefasContextType | null>(null);
@@ -60,8 +62,59 @@ export function TarefasProvider({ children }: Readonly<TarefasProviderProps>) {
     }
   }
 
+  async function atualizarTarefa(tarefaAtualizada: Tarefa) {
+    try {
+      setErro("");
+      const { _id, ...dadosTarefa } = tarefaAtualizada;
+      if (!_id) return;
+
+      const tarefaRetornada = await alterarTarefa(_id, dadosTarefa);
+
+      setTarefas((tarefasAtuais) =>
+        tarefasAtuais.map((tarefaAtual) =>
+          tarefaAtual._id === tarefaRetornada._id ? tarefaRetornada : tarefaAtual
+        )
+      );
+    } catch {
+      setErro("Não foi possível atualizar a tarefa.");
+      throw new Error("Não foi possível atualizar a tarefa.");
+    }
+  }
+
+  async function alternarConclusao(tarefa: Tarefa) {
+    try {
+      setErro("");
+      const tarefaInvertida = {
+        ...tarefa,
+        concluida: !tarefa.concluida,
+      };
+      const { _id, ...dadosTarefa } = tarefaInvertida;
+      if (!_id) return;
+
+      const tarefaRetornada = await alterarTarefa(_id, dadosTarefa);
+
+      setTarefas((tarefasAtuais) =>
+        tarefasAtuais.map((tarefaAtual) =>
+          tarefaAtual._id === tarefaRetornada._id ? tarefaRetornada : tarefaAtual
+        )
+      );
+    } catch {
+      setErro("Não foi possível alterar o status da tarefa.");
+    }
+  }
+
   return (
-    <TarefasContext.Provider value={{ tarefas, carregando, erro, adicionarTarefa, removerTarefa }}>
+    <TarefasContext.Provider
+      value={{
+        tarefas,
+        carregando,
+        erro,
+        adicionarTarefa,
+        removerTarefa,
+        atualizarTarefa,
+        alternarConclusao,
+      }}
+    >
       {children}
     </TarefasContext.Provider>
   );
