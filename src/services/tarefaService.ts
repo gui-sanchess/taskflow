@@ -14,6 +14,14 @@ export async function criarTarefa(tarefa: Omit<Tarefa, "_id">) {
   return resposta.data;
 }
 
+export async function alterarTarefa(id: string, tarefa: Omit<Tarefa, "_id">) {
+  await api.put(`${RECURSO}/${id}`, tarefa);
+  return {
+    ...tarefa,
+    _id: id,
+  };
+}
+
 export async function excluirTarefa(id: string) {
   await api.delete(`${RECURSO}/${id}`);
 }
